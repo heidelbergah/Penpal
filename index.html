@@ -22,13 +22,13 @@
             <input type="submit" value="upload">
         </form>
 
-        <?php
+<!--         <?php
             $selectQuery = "SELECT * FROM images";
             $result = $mysqli->query($selectQuery);
         
             while ($row = $result->fetch_assoc()) {
                 echo "<img src='uploads/{$row['file_name']} alt='Image' style='margin-top: 20px;'>";
             }
-        ?>
+        ?> -->
     </body>
 </html>
