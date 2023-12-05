@@ -10,16 +10,17 @@ imgs_final = detector.detect()
 
 edges = imgs_final[0]
 
+
+
 type(edges)
 
 plot_points = []
 
 utility.visualize(imgs_final,'gray')
 
-for y in range(edges.size):
-    for x in range(edges[0].size):
-        if edges[x][y] > 0:
+for y in range(len(edges)-1):
+    for x in range(len(edges[0])-1):
+        if edges[y][x] > 0:
             plot_points.append((x,y))
-            
 
 print(plot_points)
