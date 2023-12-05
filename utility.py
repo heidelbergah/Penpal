@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import os
 import scipy.misc as sm
+from itertools import groupby, product
 
 def rgb2gray(rgb):
 
@@ -24,6 +25,35 @@ def load_data(dir_name = 'faces_imgs'):
             img = rgb2gray(img)
             imgs.append(img)
     return imgs
+
+
+def manhattan(tup1, tup2):
+    return abs(tup1[0] - tup2[0]) + abs(tup1[1] - tup2[1])
+
+
+def group(test_list):
+    # Group Adjacent Coordinates
+    # Using product() + groupby() + list comprehension
+    man_tups = [sorted(sub) for sub in product(test_list, repeat = 2)
+    									if manhattan(*sub) == 1]
+ 
+    res_dict = {ele: {ele} for ele in test_list}
+    for tup1, tup2 in man_tups:
+        res_dict[tup1] |= res_dict[tup2]
+        res_dict[tup2] = res_dict[tup1]
+ 
+    res = [[*next(val)] for key, val in groupby(
+    		sorted(res_dict.values(), key = id), id)]
+ 
+    # converting tuples to numpy arrays
+    res = [np.array(sub) for sub in res]
+ 
+    # sorting numpy arrays lexicographically
+    res = sorted(res, key=lambda x: tuple(x[:,0]))
+ 
+    #converting numpy arrays back to tuples
+    res = [tuple(map(tuple, sub)) for sub in res]
+    return res
 
 
 def visualize(imgs, format=None, gray=False):
@@ -55,18 +85,25 @@ def fitToScale(armLength, points):
     X_SCALE = float(max_plot_x / X_MAX)
     Y_SCALE = float(max_plot_y / Y_MAX)
 
-    # Multiply all x and y values by their corresponding ratios.
-    # Add 2 to each y value. We need a buffer of 2 centimeters
-    # so penpal doesn't run into itself
-    for i, coordinate in enumerate(points):
-        coordinate[0] *= X_SCALE
-        coordinate[1] *= Y_SCALE
-        coordinate[1] += 2
+    return [X_SCALE, Y_SCALE]
 
 
 def copyToPositionsTxt(points):
     file = open("positions.txt", "w")
-    for i, coordinate in enumerate(points):
-        file.write(f"{coordinate[0]},{coordinate[1]}")
-        if i < len(points)-1:
-            file.write("\n")
+    X_SCALE, Y_SCALE = fitToScale(10.5, points)
+    points = group(points)
+
+    file.write("t\n")
+    for i in range(len(points)-1):
+        for j in range(len(points[i])-1):
+            if(j == 0):
+                x = points[i][j][0] * X_SCALE
+                y = (points[i][j][1] * Y_SCALE) + 2
+                file.write(f"{x},{y}\n")
+                file.write("t\n")
+            else:
+                x = points[i][j][0] * X_SCALE
+                y = (points[i][j][1] * Y_SCALE) + 2
+                file.write(f"{x},{y}\n")
+        file.write("t\n")
+    file.close()

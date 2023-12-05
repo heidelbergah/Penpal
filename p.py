@@ -16,9 +16,8 @@ plot_points = []
 for y in range(len(edges)-1):
     for x in range(len(edges[0])-1):
         if edges[y][x] > 0:
-            plot_points.append([x,y])
+            plot_points.append((x,y))
 
-utility.fitToScale(10.5, plot_points)
 utility.copyToPositionsTxt(plot_points)
 
-# penpal.drawTxtFile()
+penpal.drawTxtFile()
