@@ -36,4 +36,37 @@ def visualize(imgs, format=None, gray=False):
         plt.imshow(img, format)
     plt.show()
 
-    
+
+def fitToScale(armLength, points):
+    # Some trig to find the maximum x and y values penpal can reach
+    max_plot_x = (np.sqrt(2)*(armLength*2))/2
+    max_plot_y = max_plot_x
+
+    max_plot_y -= 2 # Shift values up by 2 at end of program
+
+    # Find max x and y values in list of coordinates. This
+    # will tell us the drawing space needed
+    X_MAX = max(points, key=lambda point: point[0])[0]
+    Y_MAX = max(points, key=lambda point: point[1])[1]
+
+    # Generate a scale for penpal to draw. Penpal needs coordinates
+    # in terms of centimeters, not pixels. This finds the according
+    # conversion ratio for x and y values
+    X_SCALE = float(max_plot_x / X_MAX)
+    Y_SCALE = float(max_plot_y / Y_MAX)
+
+    # Multiply all x and y values by their corresponding ratios.
+    # Add 2 to each y value. We need a buffer of 2 centimeters
+    # so penpal doesn't run into itself
+    for i, coordinate in enumerate(points):
+        coordinate[0] *= X_SCALE
+        coordinate[1] *= Y_SCALE
+        coordinate[1] += 2
+
+
+def copyToPositionsTxt(points):
+    file = open("positions.txt", "w")
+    for i, coordinate in enumerate(points):
+        file.write(f"{coordinate[0]},{coordinate[1]}")
+        if i < len(points)-1:
+            file.write("\n")
