@@ -133,9 +133,11 @@ def drawTxtFile():
     penDown = True
 
     while line:
-        if(line[0] == "t"):
+        if line[0] == "t":
             togglePen()
             penDown = not penDown # Flip boolean value
+        elif line[0] == "\n":
+            penDown = False
         else:
             x = line.partition(",")[0]
             y = line.partition(",")[2]
@@ -146,6 +148,3 @@ def drawTxtFile():
         line = file.readline()
 
     file.close()
-
-
-drawTxtFile()
