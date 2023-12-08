@@ -10,7 +10,7 @@ import perlin
 from utility import *
 
 no_cv = False
-export_path = "output/out.svg"
+export_path = "static/output/out.svg"
 draw_contours = True
 draw_hatch = True
 show_bitmap = False

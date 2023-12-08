@@ -1,5 +1,7 @@
 import numpy as np
 
+Y_MAX = 0
+
 def midpt(*args):
     xs,ys = 0,0
     for p in args:
@@ -21,6 +23,7 @@ def fitToScale(armLength, points):
 
     # Find max x and y values in list of coordinates. This
     # will tell us the drawing space needed
+    global Y_MAX
     X_MAX = Y_MAX = 0
     for i in range(len(points)-1):
         for j in range(len(points[i])-1):
@@ -38,21 +41,21 @@ def fitToScale(armLength, points):
 
     return [X_SCALE, Y_SCALE]
 
+# Math domain error being caused by something in here!
 def copyToPositionsTxt(points):
     file = open("positions.txt", "w")
     X_SCALE, Y_SCALE = fitToScale(10.5, points)
 
-    file.write("t\n")
     for i in range(len(points)-1):
         for j in range(len(points[i])-1):
             if(j == 0):
                 x = points[i][j][0] * X_SCALE
-                y = (points[i][j][1] * Y_SCALE) + 2
+                y = (abs(points[i][j][1] - Y_MAX) * Y_SCALE) + 2
                 file.write(f"{x},{y}\n")
                 file.write("t\n")
             else:
                 x = points[i][j][0] * X_SCALE
-                y = (points[i][j][1] * Y_SCALE) + 2
+                y = (abs(points[i][j][1] - Y_MAX) * Y_SCALE) + 2
                 file.write(f"{x},{y}\n")
         file.write("t\n")
     file.close()

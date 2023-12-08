@@ -42,6 +42,8 @@ sleepVal = 0.01
 # For some reason, the servos want to be at 90 degrees at the start of each program.
 currentX = 5
 currentY = 5
+# Is the pen down or up?
+penDown = False
 
 # x; X value of pen
 # y; Y value of pen
@@ -130,14 +132,12 @@ def closeEnough(nX, nY, tX, tY, i):
 def drawTxtFile():
     file = open("positions.txt", "r")
     line = file.readline()
-    penDown = True
+    global penDown
 
     while line:
         if line[0] == "t":
             togglePen()
             penDown = not penDown # Flip boolean value
-        elif line[0] == "\n":
-            penDown = False
         else:
             x = line.partition(",")[0]
             y = line.partition(",")[2]
@@ -148,3 +148,24 @@ def drawTxtFile():
         line = file.readline()
 
     file.close()
+
+    # Move pen back to up position
+    if penDown:
+        penDown = not penDown
+        togglePen()
+
+
+# Party time!
+def dance():
+    global sleepVal
+    original_sleep_val = sleepVal
+    sleepVal = 0.5
+    move(5,5)
+    move(1,15)
+    move(3,7)
+    move(5,15)
+    move(7,7)
+    move(9,15)
+    move(5,5)
+    sleepVal = original_sleep_val
+
