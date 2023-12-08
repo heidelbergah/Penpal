@@ -1,1 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                background-color: bisque;
+            }
 
+            button{
+                margin-left: 5em;
+                margin-top: 1em;
+                padding: 1em;
+                border: none;
+                color: white;
+                text-align: center;
+                background-color: cornflowerblue;
+                cursor: pointer;
+            }
+
+            button:hover{
+                background-color: white;
+                color: cornflowerblue;
+                border: thin;
+                border-color: cornflowerblue;
+                transition: all 0.5s;
+            }
+
+            img{
+               overflow: visible;
+               width: 100%;
+               height: 30em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Penpal</h1>
+         
+        <form action="/successful_upload" method="post" enctype="multipart/form-data"
+           <label for="image">Select A Photo You Wish To Draw:</label>
+           <input type="file" id="image" name="file" accept="image/png, image/jpeg, image/jpg">
+           <input type="submit" value="Upload">
+        </form>
+        <br>
+
+        <div>
+            <img src="static/output/out.svg" alt="SVG of Image">
+        </div>
+        <br>
+
+        <button id="draw">Draw Image</button>
+
+        <button id="dance">Dance!</button>
+         
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="static/button.js"></script>
+    </body>
+</html>
