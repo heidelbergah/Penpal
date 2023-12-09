@@ -1,8 +1,4 @@
 """
-penpal.py
-Written by James Bouchat
-Last Updated: 12/1/2023
-
 This library contains all the functions needed to operate penpal.
 
 drawTxtFile() should be the only function you need to call. To change where penpal moves, just
@@ -158,7 +154,7 @@ def drawTxtFile():
 # Party time!
 def dance():
     global sleepVal
-    original_sleep_val = sleepVal
+    originalSleepVal = sleepVal
     sleepVal = 0.5
     move(5,5)
     move(1,15)
@@ -167,5 +163,5 @@ def dance():
     move(7,7)
     move(9,15)
     move(5,5)
-    sleepVal = original_sleep_val
+    sleepVal = originalSleepVal
 
